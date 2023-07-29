@@ -5,6 +5,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const theme = createTheme({
+  // spacing 
+  spacing: 4,
   palette: {
     primary: {
       main: '#3FDEAE',
@@ -64,6 +66,7 @@ const theme = createTheme({
       fontWeight: 500,
       lineHeight: 1.57,
       letterSpacing: '0.00714em',
+      color: '#61697D',
     },
     body1: {
       fontSize: '1rem',
