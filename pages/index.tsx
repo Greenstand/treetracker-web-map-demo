@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { SvgIcon, TextField } from '@mui/material';
+import { Button, SvgIcon, TextField } from '@mui/material';
 import { Paper, Box, Typography, Avatar } from '@mui/material';
 import UserSvg from '../images/user.svg';
 
@@ -19,85 +19,106 @@ const Home: NextPage = () => {
         <Box
           sx={{
             padding: 6,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '100vh',
             }}
         >
-          <Box 
+          <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              }}
+              width: '100%',
+            }}
           >
-            <Typography variant="h5" 
+            <Box 
               sx={{
-                marginTop: '3rem',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
                 }}
             >
-              Sign In 
-            </Typography>
-            <Avatar
-              sx={{
-                width: 104,
-                height: 104,
-                marginTop: '1.7rem',
-                backgroundColor: '#F3F6FF',
-                }}
-            >
-              {/* MUI SVG Icon */}
-              <SvgIcon component={UserSvg} 
+              <Typography variant="h5" 
                 sx={{
+                  marginTop: '3rem',
+                  }}
+              >
+                Sign In 
+              </Typography>
+              <Avatar
+                sx={{
+                  width: 104,
+                  height: 104,
+                  marginTop: '1.7rem',
+                  backgroundColor: '#F3F6FF',
+                  }}
+              >
+                {/* MUI SVG Icon */}
+                <SvgIcon component={UserSvg} 
+                  sx={{
 
-                  width: 49,
-                  height: 49,
-                }}
-                viewBox="0 0 49 49"
-              />
-            </Avatar>
-            <Box
-              sx={{
-                width: '100%',
-                marginTop: 13,
-              }}
-            >
-              <Typography variant="subtitle2" >
-                Name 
-              </Typography>
-              <TextField
+                    width: 49,
+                    height: 49,
+                  }}
+                  viewBox="0 0 49 49"
+                />
+              </Avatar>
+              <Box
                 sx={{
                   width: '100%',
-                  marginTop: '0.5rem',
-                  height: 60,
-                  fontSize: '0.9rem',
-                  backgroundColor: '#F3F6FF',
+                  marginTop: 13,
                 }}
-                variant="outlined"
-                placeholder="Enter your name"
-              />
-            </Box>
-            <Box
-              sx={{
-                width: '100%',
-                marginTop: 8,
-              }}
-            >
-              <Typography variant="subtitle2" >
-                Password 
-              </Typography>
-              <TextField
+              >
+                <Typography variant="subtitle2" >
+                  Name 
+                </Typography>
+                <TextField
+                  sx={{
+                    width: '100%',
+                    marginTop: '0.5rem',
+                    height: 60,
+                    fontSize: '0.9rem',
+                    backgroundColor: '#F3F6FF',
+                  }}
+                  variant="outlined"
+                  placeholder="Enter your name"
+                />
+              </Box>
+              <Box
                 sx={{
                   width: '100%',
-                  marginTop: '0.5rem',
-                  height: 60,
-                  fontSize: '0.9rem',
-                  backgroundColor: '#F3F6FF',
+                  marginTop: 8,
                 }}
-                variant="outlined"
-                placeholder="*******"
-                type="password"
-              />
+              >
+                <Typography variant="subtitle2" >
+                  Password 
+                </Typography>
+                <TextField
+                  sx={{
+                    width: '100%',
+                    marginTop: '0.5rem',
+                    height: 60,
+                    fontSize: '0.9rem',
+                    backgroundColor: '#F3F6FF',
+                  }}
+                  variant="outlined"
+                  placeholder="*******"
+                  type="password"
+                />
+              </Box>
             </Box>
           </Box>
+          <Button 
+            sx={{
+              width: '100%',
+              marginBottom: 2,
+              height: 60,
+              color: '#fff',
+            }}
+            variant="contained"
+            disableElevation
+          >Continue</Button>
         </Box>
       </main>
     </div>
