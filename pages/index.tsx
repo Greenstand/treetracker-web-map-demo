@@ -1,10 +1,22 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { Button, SvgIcon, TextField } from '@mui/material';
+import { Button, CircularProgress, SvgIcon, TextField } from '@mui/material';
 import { Paper, Box, Typography, Avatar } from '@mui/material';
 import UserSvg from '../images/user.svg';
+import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import stateLoginForm from '../models/login/stateLoginForm';
+import useHandleLogin from '../models/login/useHandleLogin';
+
+
+
 
 const Home: NextPage = () => {
+  const [form, setForm] = useRecoilState(stateLoginForm);
+  const handleLogin = useHandleLogin();
+
   return (
     <div >
       <Head>
@@ -83,6 +95,10 @@ const Home: NextPage = () => {
                   }}
                   variant="outlined"
                   placeholder="Enter your name"
+                  value={form.name}
+                  onChange={(e) => setForm({...form, name: e.target.value})}
+                  error={!!form.nameError}
+                  helperText={form.nameError}
                 />
               </Box>
               <Box
@@ -105,6 +121,10 @@ const Home: NextPage = () => {
                   variant="outlined"
                   placeholder="*******"
                   type="password"
+                  value={form.password}
+                  onChange={(e) => setForm({...form, password: e.target.value})}
+                  error={!!form.passwordError}
+                  helperText={form.passwordError}
                 />
               </Box>
             </Box>
@@ -118,7 +138,14 @@ const Home: NextPage = () => {
             }}
             variant="contained"
             disableElevation
-          >Continue</Button>
+            onClick={handleLogin}
+          >
+            {form.isSubmitting ?
+            <CircularProgress 
+              color='inherit'
+            />
+            : 'Continue'}
+          </Button>
         </Box>
       </main>
     </div>

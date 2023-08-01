@@ -14,6 +14,20 @@ const nextConfig = {
           },
         ],
       },
+      // png
+      {
+        test: /\.png$/i,
+        issuer: /\.[jt]sx?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: 'static/images/[name].[hash:8].[ext]',
+            },
+          },
+        ],
+      },
     );
     return config;
   },
