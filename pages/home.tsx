@@ -1,8 +1,58 @@
-import { Avatar, Box, SvgIcon, Typography } from "@mui/material";
+import { Avatar, Box, Card, SvgIcon, Typography } from "@mui/material";
 import Head from "next/head";
 import NotificationIcon from '../images/Notification.svg';
 import SearchIcon from '../images/Search.svg';
 import Profile from '../images/profile.png';
+import ArrowIcon from '@mui/icons-material/ArrowForward';
+import WalletIcon from '../images/Group.svg';
+
+function WalletCard({ wallet, active }) {
+  return (
+    <Card
+      sx={{
+        minWidth: 210,
+        width: 198,
+        minHeight: 230,
+        backgroundColor: active? theme => theme.palette.primary.main: '#F1F5FF',
+        marginLeft: 5,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'start',
+        justifyContent: 'space-between',
+        padding: 5,
+        color: active? 'white': '#474B4F',
+        borderRadius: 5,
+        }}
+      elevation={0}
+    >
+      <SvgIcon component={WalletIcon} 
+        viewBox="0 0 20 20"
+        sx={{
+          width: 20,
+          height: 20,
+          fill: '#474B4F',
+          }}
+      />
+      <Box>
+      <Typography variant="h5" >
+        Token 200
+      </Typography>
+      <Typography 
+        variant="body2" >
+        Jun 21, 2021
+      </Typography>
+      </Box>
+      <Box>
+      <Typography variant="caption" >
+        WALLET 
+      </Typography>
+      <Typography variant="body2" >
+        Greenstand
+      </Typography>
+      </Box>
+    </Card>
+  )
+}
 
 export default function Home() {
   
@@ -80,7 +130,112 @@ export default function Home() {
             viewBox="0 0 28 30"
           />
         </Box>
-                <p>Home page content</p>
+        <Box 
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            width: '100%',
+            marginTop: 9.5,
+            paddingLeft: 7,
+            paddingRight: 7,
+            }}
+            >
+            <Typography variant="h5" >
+              Wallets
+            </Typography>
+            <ArrowIcon />
+        </Box>
+        <Box
+          sx={{
+            marginTop: 9,
+            display: 'flex',
+            flexDirection: 'row',
+            wrap: 'nowrap',
+            overflow: 'auto',
+            overflowX: 'hidden',
+            }}
+        >
+          {[{},{}].map((wallet, index) => (
+          <WalletCard 
+            wallet={wallet}
+            active={index === 0}
+          />
+          ))}
+        </Box>
+        <Box 
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            width: '100%',
+            marginTop: 9.5,
+            paddingLeft: 7,
+            paddingRight: 7,
+            }}
+            >
+            <Typography variant="h5" >
+              Last Transactions
+            </Typography>
+            <ArrowIcon />
+        </Box>
+        <Box  
+          sx={{
+            marginTop: 10,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingLeft: 7,
+            paddingRight: 7,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'start',
+              }}
+          >
+            <Avatar 
+              sx={{
+                width: 49,
+                height: 49,
+                marginRight: 3,
+                }}
+              src={"https://mui.com/static/images/avatar/1.jpg"} />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'start',
+                justifyContent: 'start',
+                }}
+            >
+              <Typography 
+                sx={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  }}
+              variant="body1" >
+                Samwell A.
+              </Typography>
+              <Typography 
+                sx={{
+                  fontSize: '16px',
+                  color: '#61697D',
+                  }}
+                variant="body2" >
+                10 Apr, 08:37
+              </Typography>
+            </Box>
+          </Box>
+          <Typography variant="body2" >
+            - TOKEN 187
+          </Typography>
+        </Box>
       </main>
     </div>
   )

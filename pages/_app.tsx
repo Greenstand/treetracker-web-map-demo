@@ -77,7 +77,7 @@ const theme = createTheme({
       letterSpacing: '0.00938em',
     },
     body2: {
-      fontSize: '0.875rem',
+      fontSize: '0.9rem',
       fontWeight: 400,
       lineHeight: 1.43,
       letterSpacing: '0.01071em',
@@ -90,7 +90,7 @@ const theme = createTheme({
       textTransform: 'uppercase',
       },
     caption: {
-      fontSize: '0.75rem',
+      fontSize: '0.6rem',
       fontWeight: 400,
       lineHeight: 1.66,
       letterSpacing: '0.03333em',
