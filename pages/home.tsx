@@ -1,10 +1,77 @@
-import { Avatar, Box, Card, SvgIcon, Typography } from "@mui/material";
+import { Avatar, BottomNavigation, BottomNavigationAction, Box, Card, Paper, SvgIcon, Typography } from "@mui/material";
 import Head from "next/head";
 import NotificationIcon from '../images/Notification.svg';
 import SearchIcon from '../images/Search.svg';
 import Profile from '../images/profile.png';
 import ArrowIcon from '@mui/icons-material/ArrowForward';
 import WalletIcon from '../images/Group.svg';
+import HomeIcon from '../images/home.svg';
+import V3Icon from '../images/v3.svg';
+import V4Icon from '../images/v4.svg';
+import OfferIcon from '../images/offer.svg';
+
+
+function Transaction({ transaction }) {
+  return (
+
+          <Box  
+            sx={{
+              marginTop: 10,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingLeft: 7,
+              paddingRight: 7,
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'start',
+                }}
+            >
+              <Avatar 
+                sx={{
+                  width: 49,
+                  height: 49,
+                  marginRight: 3,
+                  }}
+                src={"https://mui.com/static/images/avatar/1.jpg"} />
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'start',
+                  justifyContent: 'start',
+                  }}
+              >
+                <Typography 
+                  sx={{
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    marginTop: -1,
+                    }}
+                variant="body1" >
+                  Samwell A.
+                </Typography>
+                <Typography 
+                  sx={{
+                    fontSize: '16px',
+                    color: '#61697D',
+                    }}
+                  variant="body2" >
+                  10 Apr, 08:37
+                </Typography>
+              </Box>
+            </Box>
+            <Typography variant="body2" >
+              - <span style={{fontSize: "14px"}}>TOKEN</span> 187
+            </Typography>
+          </Box>
+  )
+}
 
 function WalletCard({ wallet, active }) {
   return (
@@ -181,61 +248,27 @@ export default function Home() {
             </Typography>
             <ArrowIcon />
         </Box>
-        <Box  
-          sx={{
-            marginTop: 10,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingLeft: 7,
-            paddingRight: 7,
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'start',
-              }}
-          >
-            <Avatar 
-              sx={{
-                width: 49,
-                height: 49,
-                marginRight: 3,
-                }}
-              src={"https://mui.com/static/images/avatar/1.jpg"} />
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'start',
-                justifyContent: 'start',
-                }}
-            >
-              <Typography 
-                sx={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  }}
-              variant="body1" >
-                Samwell A.
-              </Typography>
-              <Typography 
-                sx={{
-                  fontSize: '16px',
-                  color: '#61697D',
-                  }}
-                variant="body2" >
-                10 Apr, 08:37
-              </Typography>
-            </Box>
-          </Box>
-          <Typography variant="body2" >
-            - TOKEN 187
-          </Typography>
+        <Box>
+          {[{},{},{},{},{},{}].map((transaction, index) => (
+            <Transaction transaction={transaction} />
+            ))}
         </Box>
+        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={0}>
+          <BottomNavigation
+            value={'Recents'}
+            sx={{
+              "& svg": {
+                width: 36,
+                height: 36,
+                },
+                }}
+          >
+            <BottomNavigationAction label="Recents" icon={<HomeIcon />} />
+            <BottomNavigationAction label="v3" icon={<V3Icon />} />
+            <BottomNavigationAction label="v4" icon={<V4Icon />} />
+            <BottomNavigationAction label="offer" icon={<OfferIcon />} />
+          </BottomNavigation>
+        </Paper>
       </main>
     </div>
   )
