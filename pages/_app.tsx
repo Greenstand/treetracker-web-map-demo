@@ -1,13 +1,12 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import '../styles/globals.css';
+import type { AppProps } from 'next/app';
 // mui theme
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { RecoilRoot, useRecoilSnapshot } from 'recoil';
 import { useEffect } from 'react';
 
-
 const theme = createTheme({
-  // spacing 
+  // spacing
   spacing: 4,
   palette: {
     primary: {
@@ -18,9 +17,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: [
-      'Product Sans',
-    ].join(','),
+    fontFamily: ['Product Sans'].join(','),
     h1: {
       fontSize: '3rem',
       fontWeight: 500,
@@ -83,12 +80,12 @@ const theme = createTheme({
       letterSpacing: '0.01071em',
     },
     button: {
-      fontSize: '0.875rem', 
+      fontSize: '0.875rem',
       fontWeight: 500,
       lineHeight: 1.75,
       letterSpacing: '0.02857em',
       textTransform: 'uppercase',
-      },
+    },
     caption: {
       fontSize: '0.6rem',
       fontWeight: 400,
@@ -98,18 +95,17 @@ const theme = createTheme({
   },
 });
 
-function DebugObserver(){
+function DebugObserver() {
   const snapshot = useRecoilSnapshot();
   useEffect(() => {
     console.debug('The following atoms were modified:');
-    for (const node of snapshot.getNodes_UNSTABLE({isModified: true})) {
+    for (const node of snapshot.getNodes_UNSTABLE({ isModified: true })) {
       console.debug(node.key, snapshot.getLoadable(node));
     }
   }, [snapshot]);
 
   return null;
 }
-
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -119,7 +115,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </ThemeProvider>
     </RecoilRoot>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

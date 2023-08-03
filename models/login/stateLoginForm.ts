@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 const stateLoginForm = atom({
   key: 'wmd-loginForm',
