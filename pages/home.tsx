@@ -9,6 +9,7 @@ import HomeIcon from '../images/home.svg';
 import V3Icon from '../images/v3.svg';
 import V4Icon from '../images/v4.svg';
 import OfferIcon from '../images/offer.svg';
+import { useRouter } from "next/router";
 
 
 function Transaction({ transaction }) {
@@ -74,6 +75,7 @@ function Transaction({ transaction }) {
 }
 
 function WalletCard({ wallet, active }) {
+  const nextRouter = useRouter();
   return (
     <Card
       sx={{
@@ -91,6 +93,7 @@ function WalletCard({ wallet, active }) {
         borderRadius: 5,
         }}
       elevation={0}
+      onClick={() => nextRouter.push('/wallet')}
     >
       <SvgIcon component={WalletIcon} 
         viewBox="0 0 20 20"
