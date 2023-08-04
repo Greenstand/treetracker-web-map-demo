@@ -40,7 +40,7 @@ export default function Wallet() {
         }}
       >
         <iframe
-          src="https://map.treetracker.org/top"
+          src="https://alpha-dev.treetracker.org/top"
           height="100%"
           width="100%"
           style={{ border: 'none' }}

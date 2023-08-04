@@ -12,7 +12,13 @@ import useHandleLogin from '../models/login/useHandleLogin';
 
 const Home: NextPage = () => {
   const [form, setForm] = useRecoilState(stateLoginForm);
-  const handleLogin = useHandleLogin();
+  const router = useRouter();
+  const handleLogin = useHandleLogin({
+    stateLoginForm, 
+    onSuccess: () => {
+      router.push('/home');  
+    },
+  });
 
   return (
     <div>

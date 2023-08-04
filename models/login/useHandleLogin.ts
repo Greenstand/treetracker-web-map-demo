@@ -1,11 +1,16 @@
-import { useRouter } from 'next/router';
-import { useRecoilState } from 'recoil';
-import loginForm from './stateLoginForm';
+import { RecoilState, useRecoilState } from 'recoil';
+import { StateLoginForm } from './typeStateLoginForm';
+import {login} from '../api/accounts';
 
-const useHandleLogin = () => {
-  const [form, setForm] = useRecoilState(loginForm);
-  const nextRouter = useRouter();
-  const handleLogin = () => {
+function useHandleLogin<StateLoginForm>({
+  stateLoginForm,
+  onSuccess,
+}:{
+  stateLoginForm: RecoilState<StateLoginForm>,
+  onSuccess: () => void,
+}) {
+  const [form, setForm] = useRecoilState(stateLoginForm);
+  const handleLogin = async () => {
     if (!form.name) {
       setForm({ ...form, nameError: 'Please enter your name' });
       return;
@@ -17,11 +22,8 @@ const useHandleLogin = () => {
     console.log('login');
     // sleep
     setForm({ ...form, isSubmitting: true });
-    new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-      // navigate to home page.
-      setForm({ ...form, isSubmitting: false });
-      nextRouter.push('/home');
-    });
+    const user = await login(form.name, form.password);
+    onSuccess();
   };
   return handleLogin;
 };
