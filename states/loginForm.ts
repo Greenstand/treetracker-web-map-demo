@@ -1,7 +1,7 @@
 import { RecoilState, atom } from 'recoil';
-import { StateLoginForm } from './typeStateLoginForm';
+import { LoginForm } from '../models/login/LoginForm';
 
-const stateLoginForm: RecoilState<StateLoginForm> = atom<StateLoginForm>({
+const stateLoginForm: RecoilState<LoginForm> = atom<LoginForm>({
   key: 'stateLoginForm',
   default: {
     name: '',

@@ -1,4 +1,4 @@
-export type StateLoginForm = {
+export type LoginForm = {
   name: string,
   nameError: string,
   password: string,

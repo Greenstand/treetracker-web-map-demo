@@ -1,15 +1,16 @@
 import { RecoilState, useRecoilState } from 'recoil';
-import { StateLoginForm } from './typeStateLoginForm';
+import { LoginForm } from './LoginForm';
 import {login} from '../api/accounts';
+import { User } from '../user/User';
 
-function useHandleLogin<StateLoginForm>({
-  stateLoginForm,
+function useHandleLogin({
+  loginForm,
   onSuccess,
 }:{
-  stateLoginForm: RecoilState<StateLoginForm>,
-  onSuccess: () => void,
+  loginForm: RecoilState<LoginForm>,
+  onSuccess: (user: User) => void,
 }) {
-  const [form, setForm] = useRecoilState(stateLoginForm);
+  const [form, setForm] = useRecoilState<LoginForm>(loginForm);
   const handleLogin = async () => {
     if (!form.name) {
       setForm({ ...form, nameError: 'Please enter your name' });
@@ -23,7 +24,7 @@ function useHandleLogin<StateLoginForm>({
     // sleep
     setForm({ ...form, isSubmitting: true });
     const user = await login(form.name, form.password);
-    onSuccess();
+    onSuccess(user);
   };
   return handleLogin;
 };

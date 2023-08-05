@@ -7,15 +7,20 @@ import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import stateLoginForm from '../models/login/stateLoginForm';
+import loginForm from '../states/loginForm';
+import currentUser from '../states/currentUser';
 import useHandleLogin from '../models/login/useHandleLogin';
+import { User } from '../models/user/User';
 
 const Home: NextPage = () => {
-  const [form, setForm] = useRecoilState(stateLoginForm);
+  const [form, setForm] = useRecoilState(loginForm);
+  const [user, setUser] = useRecoilState(currentUser);
   const router = useRouter();
   const handleLogin = useHandleLogin({
-    stateLoginForm, 
-    onSuccess: () => {
+    loginForm, 
+    onSuccess: (user: User) => {
+      console.log("user:", user);
+      setUser(user);
       router.push('/home');  
     },
   });

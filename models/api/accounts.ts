@@ -1,11 +1,7 @@
 import {faker} from '@faker-js/faker';
+import { User } from '../user/User';
 
-async function login(user: string, password: string): Promise<{
-  userId: string, 
-  token: string,
-  firstName: string,
-  lastName: string,
-}> {
+async function login(user: string, password: string): Promise<User> {
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
