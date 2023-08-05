@@ -4,6 +4,7 @@ import {
   BottomNavigationAction,
   Box,
   Card,
+  CircularProgress,
   Paper,
   SvgIcon,
   Typography,
@@ -13,7 +14,6 @@ import NotificationIcon from '../images/Notification.svg';
 import SearchIcon from '../images/Search.svg';
 import Profile from '../images/profile.png';
 import ArrowIcon from '@mui/icons-material/ArrowForward';
-import WalletIcon from '../images/Group.svg';
 import HomeIcon from '../images/home.svg';
 import V3Icon from '../images/v3.svg';
 import V4Icon from '../images/v4.svg';
@@ -28,6 +28,8 @@ import * as transactions from '../models/api/transactions';
 import { Wallet } from '../models/entities/Wallet';
 import { Transaction } from '../models/entities/Transaction';
 import moment from 'moment';
+import MapIcon from '@mui/icons-material/Map';
+import Link from 'next/link';
 
 function TransactionComponent({ transaction }) {
   return (
@@ -93,7 +95,7 @@ function TransactionComponent({ transaction }) {
   );
 }
 
-function WalletCard({ wallet, active }) {
+function WalletCard({ wallet, active, handleClick }) {
   const nextRouter = useRouter();
   return (
     <Card
@@ -114,17 +116,11 @@ function WalletCard({ wallet, active }) {
         borderRadius: 5,
       }}
       elevation={0}
-      onClick={() => nextRouter.push('/wallet')}
+      onClick={handleClick}
     >
-      <SvgIcon
-        component={WalletIcon}
-        viewBox="0 0 20 20"
-        sx={{
-          width: 20,
-          height: 20,
-          fill: '#474B4F',
-        }}
-      />
+      <Link href={`/wallets/${wallet.id}`}>
+        <MapIcon  sx={{ fontSize: 32 }} />
+      </Link>
       <Box>
         <Typography variant="h5">Token {wallet.balance && wallet.balance.toLocaleString()}</Typography>
         <Typography variant="body2">
@@ -143,7 +139,21 @@ export default function Home() {
   const [user, setUser] = useRecoilState(currentUser);
   const [balance, setBalance] = useState(0);
   const [ws, setWs] = useState<Wallet[]>([]);
+  const [currentWalletId, setCurrentWalletId] = useState('');
   const [ts, setTs] = useState<Transaction[]>([]);
+  const [isTransactionLoading, setIsTransactionLoading] = useState(true);
+
+  async function handleWalletClick(id: string) {
+    setCurrentWalletId(id);
+    const wallet = ws.find((w) => w.id === id);
+    if (wallet) {
+      setIsTransactionLoading(true);
+      const ts = await transactions.getTransactions(wallet.id);
+      setIsTransactionLoading(false);
+      setTs(ts);
+    }
+  }
+
   if (!user) {
     return (
       <div>
@@ -159,9 +169,12 @@ export default function Home() {
 
       const ws = await wallets.getWallets(user.userId);
       setWs(ws);
-
-      const ts = await transactions.getTransactions(ws[0].id);
-      setTs(ts);
+      if (ws.length > 0) {
+        setCurrentWalletId(ws[0].id);
+        const ts = await transactions.getTransactions(ws[0].id);
+        setIsTransactionLoading(false);
+        setTs(ts);
+      }
     };
     load();
   }, []);
@@ -270,11 +283,15 @@ export default function Home() {
             flexDirection: 'row',
             wrap: 'nowrap',
             overflow: 'auto',
-            overflowX: 'hidden',
+            overflowX: 'scroll',
           }}
         >
-          {ws.map((wallet, index) => (
-            <WalletCard wallet={wallet} active={index === 0} />
+          {ws.map((wallet) => (
+            <WalletCard 
+              wallet={wallet} 
+              active={wallet.id === currentWalletId}
+              handleClick={() => handleWalletClick(wallet.id)}
+              />
           ))}
         </Box>
         <Box
@@ -292,11 +309,26 @@ export default function Home() {
           <Typography variant="h5">Last Transactions</Typography>
           <ArrowIcon />
         </Box>
-        <Box>
-          {ts.map((transaction, index) => (
+        {isTransactionLoading && 
+          <Box
+            sx={{
+              width: '100%',
+              marginTop: 9,
+              paddingLeft: 7,
+              paddingRight: 7,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+          <CircularProgress />
+          </Box>
+        }
+        {!isTransactionLoading && ts.map((transaction, index) => (
+          <Box>
             <TransactionComponent transaction={transaction} />
-          ))}
-        </Box>
+          </Box>
+        ))}
         <Paper
           sx={{ 
             position: 'fixed', 
