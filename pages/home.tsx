@@ -298,15 +298,22 @@ export default function Home() {
           ))}
         </Box>
         <Paper
-          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
+          sx={{ 
+            position: 'fixed', 
+            bottom: 0, 
+            left: 0, 
+            right: 0,
+            height: 90,
+          }}
           elevation={0}
         >
           <BottomNavigation
             value={'Recents'}
             sx={{
+              height: 90,
               '& svg': {
-                width: 36,
-                height: 36,
+                width: 31,
+                height: 31,
               },
             }}
           >
