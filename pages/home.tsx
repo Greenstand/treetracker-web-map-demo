@@ -19,8 +19,17 @@ import V3Icon from '../images/v3.svg';
 import V4Icon from '../images/v4.svg';
 import OfferIcon from '../images/offer.svg';
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import currentUser from '../states/currentUser';
+import { useEffect, useState } from 'react';
+import * as accounts from '../models/api/accounts';
+import * as wallets from '../models/api/wallets';
+import * as transactions from '../models/api/transactions';
+import { Wallet } from '../models/entities/Wallet';
+import { Transaction } from '../models/entities/Transaction';
+import moment from 'moment';
 
-function Transaction({ transaction }) {
+function TransactionComponent({ transaction }) {
   return (
     <Box
       sx={{
@@ -46,7 +55,7 @@ function Transaction({ transaction }) {
             height: 49,
             marginRight: 3,
           }}
-          src={'https://mui.com/static/images/avatar/1.jpg'}
+          src={transaction.senderAvatar}
         />
         <Box
           sx={{
@@ -64,7 +73,7 @@ function Transaction({ transaction }) {
             }}
             variant="body1"
           >
-            Samwell A.
+            {transaction.senderName}
           </Typography>
           <Typography
             sx={{
@@ -73,12 +82,12 @@ function Transaction({ transaction }) {
             }}
             variant="body2"
           >
-            10 Apr, 08:37
+            {moment(transaction.createdAt).format('MMM DD, YYYY')}
           </Typography>
         </Box>
       </Box>
       <Typography variant="body2">
-        - <span style={{ fontSize: '14px' }}>TOKEN</span> 187
+        - <span style={{ fontSize: '14px' }}>TOKEN</span> {transaction.amount && transaction.amount.toLocaleString()}
       </Typography>
     </Box>
   );
@@ -117,18 +126,47 @@ function WalletCard({ wallet, active }) {
         }}
       />
       <Box>
-        <Typography variant="h5">Token 200</Typography>
-        <Typography variant="body2">Jun 21, 2021</Typography>
+        <Typography variant="h5">Token {wallet.balance && wallet.balance.toLocaleString()}</Typography>
+        <Typography variant="body2">
+          {moment(wallet.createdAt).format('MMM DD, YYYY')}
+        </Typography>
       </Box>
       <Box>
         <Typography variant="caption">WALLET</Typography>
-        <Typography variant="body2">Greenstand</Typography>
+        <Typography variant="body2">{wallet.name}</Typography>
       </Box>
     </Card>
   );
 }
 
 export default function Home() {
+  const [user, setUser] = useRecoilState(currentUser);
+  const [balance, setBalance] = useState(0);
+  const [ws, setWs] = useState<Wallet[]>([]);
+  const [ts, setTs] = useState<Transaction[]>([]);
+  if (!user) {
+    return (
+      <div>
+        Need to login, <a href="/" >click here</a>
+      </div>
+    );
+  }
+
+  useEffect(() => {
+    const load = async () => {
+      const balance = await accounts.getBalance(user.userId);
+      setBalance(balance);
+
+      const ws = await wallets.getWallets(user.userId);
+      setWs(ws);
+
+      const ts = await transactions.getTransactions(ws[0].id);
+      setTs(ts);
+    };
+    load();
+  }, []);
+      
+
   return (
     <div>
       <Head>
@@ -159,7 +197,7 @@ export default function Home() {
             }}
           >
             <Avatar
-              src={'https://mui.com/static/images/avatar/1.jpg'}
+              src={user.avatar}
               sx={{
                 width: 49,
                 height: 49,
@@ -188,7 +226,7 @@ export default function Home() {
                 }}
                 variant="h2"
               >
-                Token 4,822,142
+                Token {balance && balance.toLocaleString()}
               </Typography>
             </Box>
           </Box>
@@ -235,7 +273,7 @@ export default function Home() {
             overflowX: 'hidden',
           }}
         >
-          {[{}, {}].map((wallet, index) => (
+          {ws.map((wallet, index) => (
             <WalletCard wallet={wallet} active={index === 0} />
           ))}
         </Box>
@@ -255,8 +293,8 @@ export default function Home() {
           <ArrowIcon />
         </Box>
         <Box>
-          {[{}, {}, {}, {}, {}, {}].map((transaction, index) => (
-            <Transaction transaction={transaction} />
+          {ts.map((transaction, index) => (
+            <TransactionComponent transaction={transaction} />
           ))}
         </Box>
         <Paper

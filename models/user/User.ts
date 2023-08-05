@@ -3,4 +3,5 @@ export type User = {
   token: string,
   firstName: string,
   lastName: string,
+  avatar: string,
 };
