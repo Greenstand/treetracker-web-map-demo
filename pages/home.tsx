@@ -222,8 +222,8 @@ export default function Home() {
           </IconButton>
         </Grid>
       </Grid>
-      <Drawer open={open} onClose={toggleDrawer}>
-        <Box sx={{ width: '70vw', marginTop: '10vh', paddingLeft: 5 }}>
+      <Drawer variant="temporary" open={open} onClose={toggleDrawer}>
+        <Box sx={{ width: '70vw', marginTop: '10vh', paddingLeft: 7 }}>
           <Avatar
             src={user.avatar}
             sx={{
@@ -262,7 +262,10 @@ export default function Home() {
               >
                 <HistoryRoundedIcon />
               </Box>
-              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+              <Typography
+                variant="h6"
+                sx={{ paddingLeft: 6, fontSize: '1rem' }}
+              >
                 Transaction History
               </Typography>
             </Stack>
