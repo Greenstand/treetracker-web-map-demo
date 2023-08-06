@@ -4,26 +4,24 @@ import { Button, CircularProgress, SvgIcon, TextField } from '@mui/material';
 import { Paper, Box, Typography, Avatar } from '@mui/material';
 import UserSvg from '../images/user.svg';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import loginForm from '../states/loginForm';
 import currentUser from '../states/currentUser';
-import useHandleLogin from '../models/login/useHandleLogin';
+import handleLogin from '../models/login/handleLogin';
 import { User } from '../models/user/User';
+import { LoginForm } from '../models/login/LoginForm';
 
 const Home: NextPage = () => {
-  const [form, setForm] = useRecoilState(loginForm);
+  const [form, setForm] = useState<LoginForm>({
+    name: '',
+    password: '',
+    isSubmitting: false,
+    nameError: '',
+    passwordError: '',
+  });
   const [user, setUser] = useRecoilState(currentUser);
   const router = useRouter();
-  const handleLogin = useHandleLogin({
-    loginForm, 
-    onSuccess: (user: User) => {
-      console.log("user:", user);
-      setUser(user);
-      router.push('/home');  
-    },
-  });
 
   return (
     <div>
@@ -148,7 +146,15 @@ const Home: NextPage = () => {
             }}
             variant="contained"
             disableElevation
-            onClick={handleLogin}
+            onClick={() => handleLogin(
+              form,
+              setForm,
+              (user: User) => {
+                console.log("user:", user);
+                setUser(user);
+                router.push('/home');  
+              },
+            )}
           >
             {form.isSubmitting ? (
               <CircularProgress color="inherit" />
