@@ -257,7 +257,6 @@ export default function Home() {
             {user.firstName.toLowerCase() + '.' + user.lastName.toLowerCase()}
             @gmail.com
           </Typography>
-          <Typography variant="subtitle2">samwell.h@gmail.com</Typography>
           <List sx={{ marginTop: 8, marginLeft: 0, paddingLeft: 0 }}>
             <ListItem sx={{ marginLeft: 0, paddingLeft: 0 }}>
               <Stack
