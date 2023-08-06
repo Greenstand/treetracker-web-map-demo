@@ -214,8 +214,8 @@ export default function Home() {
             justifyContent: 'center',
           }}
         >
-          <IconButton onClick={toggleDrawer}>
-            <CloseRoundedIcon />
+          <IconButton onClick={toggleDrawer} size="large">
+            <CloseRoundedIcon fontSize="large" sx={{ color: '#000' }} />
           </IconButton>
         </Grid>
         <Grid
@@ -229,7 +229,7 @@ export default function Home() {
           }}
         >
           <Typography
-            sx={{ width: '100%', height: '4vh', textAlign: 'center' }}
+            sx={{ width: '100%', height: '5vh', textAlign: 'center' }}
             variant="h4"
           >
             Profile
