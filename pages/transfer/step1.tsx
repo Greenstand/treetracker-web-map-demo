@@ -1,61 +1,19 @@
-import { Autocomplete, Avatar, Box, CircularProgress, SvgIcon, TextField, Typography } from "@mui/material";
+import { Alert, Autocomplete, Avatar, Box, CircularProgress, SvgIcon, TextField, Typography } from "@mui/material";
 import Header from "../../components/Header";
 import WalletIcon from '../../images/Group.svg';
 import { faker } from "@faker-js/faker";
 import { ArrowDownward } from "@mui/icons-material";
 import React from "react";
 import { Wallet } from "../../models/entities/Wallet";
-import * as wallets from "../../models/api/wallets";
 import { useRecoilState } from "recoil";
 import transferWizard from "../../states/transferWizard";
+import { useTransferWizard } from "../../models/transfer";
+import WalletInput from "../../components/WalletInput";
+import { useRouter } from "next/router";
 
 export default function Transfer(){
-  const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState<readonly Wallet[]>([]);
-  const loading = open && options.length === 0;
-  const [value, setValue] = React.useState<Wallet | null>(null);
-  const [inputValue, setInputValue] = React.useState('');
-  const [tw, setTW] = useRecoilState(transferWizard);
-
-  React.useEffect(() => {
-    let active = true;
-
-    if (!loading) {
-      return undefined;
-    }
-
-    (async () => {
-      if (active) {
-        wallets.getWalletByKeyword('')
-          .then((wallets: Wallet[]) => {
-            setOptions([...wallets]);
-            });
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
-
-  const fetch = async (value: string, callback: (results: readonly Wallet[]) => void) => {
-    const options = await wallets.getWalletByKeyword(value);
-    callback(options);
-  }
-
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
-
-  React.useEffect(() => {
-    fetch(inputValue, (options) => {
-      console.log('fetching');
-      setOptions([...options]);
-    });
-
-  }, [value, inputValue]);
+  const transferWizard = useTransferWizard();
+  const router = useRouter();
 
 
   return(
@@ -68,9 +26,18 @@ export default function Transfer(){
       <Header
         title="Transfer Token"
         backLink="/home"
-        forwardLink="/transfer/step2"
+        forwardLink={() => {
+          transferWizard.gotoStep2(
+            () => {
+              router.push('/transfer/step2');
+            }
+          );
+        }}
         forwardText="Next"
       />
+      {transferWizard.wizard.step1.error && (
+        <Alert onClose={() => {}}>{transferWizard.wizard.step1.error}</Alert>
+      )}
       <Box
         sx={{
           display: 'flex',
@@ -116,14 +83,14 @@ export default function Transfer(){
             height: 50,
             marginRight: 3,
           }}
-          src={tw.fromWallet && tw.fromWallet.logo}
+          src={transferWizard.wizard.fromWallet?.logo}
         />
         <Box>
           <Typography variant="h6" sx={{ fontWeight: '600', fontSize: '15px' }}>
-            {tw.token && tw.token.id}
+            {transferWizard.wizard.token?.id}
           </Typography>
           <Typography variant="body2" sx={{ fontSize: '11px', color: '#61697D' }} >
-            Created at {tw.token && tw.token.createdAt.toLocaleString()}
+            Created at {transferWizard.wizard.token?.createdAt.toLocaleDateString()}
           </Typography>
         </Box>
       </Box>
@@ -136,50 +103,7 @@ export default function Transfer(){
           fontSize="large"
         />
       </Box>
-          <Autocomplete
-            id="asynchronous-demo"
-            sx={{ width: '100%' }}
-            open={open}
-            onOpen={() => {
-              setOpen(true);
-            }}
-            onClose={() => {
-              setOpen(false);
-            }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            getOptionLabel={(option) => option.name}
-            options={options}
-            loading={loading}
-            filterOptions={(x) => x}
-            value={value}
-            onInputChange={(event, newInputValue) => {
-              setInputValue(newInputValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                sx={{
-                  width: '100%',
-                  marginTop: '0.5rem',
-                  height: 60,
-                  fontSize: '0.9rem',
-                  backgroundColor: '#F3F6FF',
-                }}
-                {...params}
-                label=""
-                placeholder="Send to wallet, input name here"
-                variant="outlined"
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <React.Fragment>
-                      {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                      {params.InputProps.endAdornment}
-                    </React.Fragment>
-                  ),
-                }}
-            />
-      )}
-    />
+      <WalletInput onWalletSelected={wallet => transferWizard.setWizard(c => ({...c, toWallet: wallet}))}/>
       </Box>
     </Box>
   )

@@ -1,5 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 
 export default function Header({
@@ -10,7 +10,7 @@ export default function Header({
 }: {
   title: string;
   backLink: string;
-  forwardLink: string;
+  forwardLink: string | Function;
   forwardText?: string;
 }) {
 
@@ -36,9 +36,15 @@ export default function Header({
         </Box>
         <Box>
           <Typography variant="h6" color="primary">
+            {forwardLink instanceof Function ? 
+            <Button 
+              sx={{textTransform: "none"}}
+              onClick={forwardLink}>{forwardText}</Button> 
+            :
             <Link href={forwardLink}>
               {forwardText}
             </Link>
+            }
           </Typography>
         </Box>
       </Box>

@@ -137,6 +137,7 @@ function WalletCard({ wallet, active, handleClick }) {
 
 export default function Home() {
   const [user, setUser] = useRecoilState(currentUser);
+  console.log('home user:', user);
   const [balance, setBalance] = useState(0);
   const [ws, setWs] = useState<Wallet[]>([]);
   const [currentWalletId, setCurrentWalletId] = useState('');
