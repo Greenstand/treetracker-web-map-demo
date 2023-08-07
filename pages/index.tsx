@@ -8,20 +8,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import currentUser from '../states/currentUser';
-import handleLogin from '../models/login/handleLogin';
 import { User } from '../models/user/User';
-import { LoginForm } from '../models/login/LoginForm';
+import useLoginForm from '../models/login/useLoginForm';
 
 const Home: NextPage = () => {
-  const [form, setForm] = useState<LoginForm>({
-    name: '',
-    password: '',
-    isSubmitting: false,
-    nameError: '',
-    passwordError: '',
-  });
-  const [user, setUser] = useRecoilState(currentUser);
   const router = useRouter();
+  const loginForm = useLoginForm();
+  const [user, setUser] = useRecoilState(currentUser);
 
   return (
     <div>
@@ -103,10 +96,10 @@ const Home: NextPage = () => {
                   }}
                   variant="outlined"
                   placeholder="Enter your name"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  error={!!form.nameError}
-                  helperText={form.nameError}
+                  value={loginForm.name}
+                  onChange={e => loginForm.handleNameChange(e.target.value)}
+                  error={!!loginForm.nameError}
+                  helperText={loginForm.nameError}
                 />
               </Box>
               <Box
@@ -127,12 +120,10 @@ const Home: NextPage = () => {
                   variant="outlined"
                   placeholder="*******"
                   type="password"
-                  value={form.password}
-                  onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
-                  }
-                  error={!!form.passwordError}
-                  helperText={form.passwordError}
+                  value={loginForm.password}
+                  onChange={e => loginForm.handlePasswordChange(e.target.value)}
+                  error={!!loginForm.passwordError}
+                  helperText={loginForm.passwordError}
                 />
               </Box>
             </Box>
@@ -146,9 +137,7 @@ const Home: NextPage = () => {
             }}
             variant="contained"
             disableElevation
-            onClick={() => handleLogin(
-              form,
-              setForm,
+            onClick={e => loginForm.handleSubmit(
               (user: User) => {
                 console.log("user:", user);
                 setUser(user);
@@ -156,7 +145,7 @@ const Home: NextPage = () => {
               },
             )}
           >
-            {form.isSubmitting ? (
+            {loginForm.isSubmitting ? (
               <CircularProgress color="inherit" />
             ) : (
               'Continue'
