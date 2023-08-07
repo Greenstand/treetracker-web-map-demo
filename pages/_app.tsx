@@ -17,7 +17,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ['Product Sans'].join(','),
+    fontFamily: ['Lexend'].join(','),
     h1: {
       fontSize: '3rem',
       fontWeight: 500,
