@@ -6,8 +6,7 @@ import { ArrowDownward } from "@mui/icons-material";
 import React from "react";
 import { Wallet } from "../../models/entities/Wallet";
 import { useRecoilState } from "recoil";
-import transferWizard from "../../states/transferWizard";
-import { useTransferWizard } from "../../models/transfer";
+import useTransferWizard from "../../models/transfer/useTransferWizard";
 import WalletInput from "../../components/WalletInput";
 import { useRouter } from "next/router";
 
@@ -18,14 +17,10 @@ export default function Transfer(){
 
   return(
     <Box
-      sx={{
-        paddingLeft: 5,
-        paddingRight: 5,
-        }}
     >
       <Header
         title="Transfer Token"
-        backLink="/home"
+        backLink={`/wallets/${transferWizard.wizard.fromWallet?.id}`}
         forwardLink={() => {
           transferWizard.gotoStep2(
             () => {
@@ -35,6 +30,12 @@ export default function Transfer(){
         }}
         forwardText="Next"
       />
+      <Box
+        sx={{
+          paddingLeft: 5,
+          paddingRight: 5,
+          }}
+      >
       {transferWizard.wizard.step1.error && (
         <Alert onClose={() => {}}>{transferWizard.wizard.step1.error}</Alert>
       )}
@@ -90,7 +91,7 @@ export default function Transfer(){
             {transferWizard.wizard.token?.id}
           </Typography>
           <Typography variant="body2" sx={{ fontSize: '11px', color: '#61697D' }} >
-            Created at {transferWizard.wizard.token?.createdAt.toLocaleDateString()}
+            in wallet {transferWizard.wizard.fromWallet?.name}
           </Typography>
         </Box>
       </Box>
@@ -104,6 +105,7 @@ export default function Transfer(){
         />
       </Box>
       <WalletInput onWalletSelected={wallet => transferWizard.setWizard(c => ({...c, toWallet: wallet}))}/>
+      </Box>
       </Box>
     </Box>
   )

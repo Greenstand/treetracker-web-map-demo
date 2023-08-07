@@ -10,6 +10,9 @@ const transferWizardState = atom<{
   step1: {
     error: string | null;
   };
+  step2: {
+    error: string | null;
+  };
 }>({
   key: 'transfer/transferWizard',
   default: {
@@ -18,6 +21,9 @@ const transferWizardState = atom<{
     toWallet: null,
     token: null,
     step1: {
+      error: null,
+    },
+    step2: {
       error: null,
     },
   },
@@ -46,8 +52,11 @@ export default function useTransferWizard() {
     onSuccess();
   }
 
-  function transfer(onSuccess: Function) {
+  async function transfer(onSuccess: Function) {
     console.log('transfer');
+    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     onSuccess();
   }
 

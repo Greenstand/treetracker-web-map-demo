@@ -6,8 +6,7 @@ import { ArrowDownward } from "@mui/icons-material";
 import React from "react";
 import { Wallet } from "../../models/entities/Wallet";
 import { useRecoilState } from "recoil";
-import transferWizard from "../../states/transferWizard";
-import { useTransferWizard } from "../../models/transfer";
+import useTransferWizard from "../../models/transfer/useTransferWizard";
 import WalletInput from "../../components/WalletInput";
 import { useRouter } from "next/router";
 
@@ -18,10 +17,6 @@ export default function Step2(){
 
   return(
     <Box
-      sx={{
-        paddingLeft: 5,
-        paddingRight: 5,
-        }}
     >
       <Header
         title="Please confirm"
@@ -35,8 +30,14 @@ export default function Step2(){
         }}
         forwardText="Transfer"
       />
-      {transferWizard.wizard.step1.error && (
-        <Alert onClose={() => {}}>{transferWizard.wizard.step1.error}</Alert>
+      <Box
+        sx={{
+          paddingLeft: 5,
+          paddingRight: 5,
+          }}
+      >
+      {transferWizard.wizard.step2.error && (
+        <Alert onClose={() => {}}>{transferWizard.wizard.step2.error}</Alert>
       )}
       <Box
         sx={{
@@ -60,7 +61,13 @@ export default function Step2(){
           }
         }}
       >
-        <Check />
+        <Check 
+          sx={{
+            width: 72,
+            height: 72,
+            fill: "#ffb34e",
+            }}
+        />
       </Avatar>
       <Box
         sx={{
@@ -85,7 +92,7 @@ export default function Step2(){
             {transferWizard.wizard.token?.id}
           </Typography>
           <Typography variant="body2" sx={{ fontSize: '11px', color: '#61697D' }} >
-            Created at {transferWizard.wizard.token?.createdAt.toLocaleDateString()}
+            in wallet {transferWizard.wizard.fromWallet?.name}
           </Typography>
         </Box>
       </Box>
@@ -126,9 +133,10 @@ export default function Step2(){
         </Box>
       </Box>
       <Box>
-        <Typography variant="body2" sx={{marginTop: 5 }}>
+        <Typography variant="body2" sx={{marginTop: 12 }}>
           You are going to transfer 1 token from wallet: {transferWizard.wizard.fromWallet?.name} to wallet: {transferWizard.wizard.toWallet?.name}.
         </Typography>
+      </Box>
       </Box>
       </Box>
     </Box>

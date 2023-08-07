@@ -1,38 +1,43 @@
 import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import Header from '../../components/Header';
-import * as transfer from '../../models/transfer';
 import { useEffect, useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { Wallet } from '../../models/entities/Wallet';
 import formatWalletName from '../../models/wallet/formatWalletName';
 import { Token } from '../../models/entities/Token';
+import useTransferWizard from '../../models/transfer/useTransferWizard';
 
 export default function Wallet() {
   const [currentWallet, setCurrentWallet] = useState<Wallet | null>(null);
   const [chosenToken, setChosenToken] = useState<Token | null>(null);
-  const transferWizard = transfer.useTransferWizard();
+  const transferWizard = useTransferWizard();
 
   //init transferWizard
   useEffect(() => {
     async function load(){
       await new Promise((resolve) => setTimeout(resolve, 2000));
-    const wallet = {
-      id: faker.datatype.uuid(),
-      name: faker.internet.userName(),
-      balance: faker.datatype.number({ min: 1000, max: 100000 }),
-      createdAt: faker.date.past(),
-      logo: faker.image.url(),
-    };
-    setCurrentWallet(wallet);
+      if(transferWizard.wizard.fromWallet && transferWizard.wizard.token){
+        setCurrentWallet(transferWizard.wizard.fromWallet);
+        setChosenToken(transferWizard.wizard.token);
+      }else{
+        const wallet = {
+          id: faker.datatype.uuid(),
+          name: faker.internet.userName(),
+          balance: faker.datatype.number({ min: 1000, max: 100000 }),
+          createdAt: faker.date.past(),
+          logo: faker.image.url(),
+        };
+        setCurrentWallet(wallet);
+        const token = {
+          id: faker.datatype.uuid(),
+          walletId: wallet.id,
+          createdAt: faker.date.past(),
+        }
+        setChosenToken(token);
+        }
+      }
 
-    const token = {
-      id: faker.datatype.uuid(),
-      walletId: wallet.id,
-      createdAt: faker.date.past(),
-    }
-    setChosenToken(token);
-    }
     load();
 
   }, []);
@@ -59,7 +64,7 @@ export default function Wallet() {
       }}
     >
       <Header 
-        title={currentWallet && formatWalletName(currentWallet) || '---'}
+        title={currentWallet && formatWalletName(currentWallet) || ''}
         backLink="/home"
         forwardLink={transferWizard.isTransferable ? "/transfer/step1": ""}
         forwardText={transferWizard.isTransferable ? 'Transfer': ''}
