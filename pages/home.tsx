@@ -89,7 +89,8 @@ function TransactionComponent({ transaction }) {
         </Box>
       </Box>
       <Typography variant="body2">
-        - <span style={{ fontSize: '14px' }}>TOKEN</span> {transaction.amount && transaction.amount.toLocaleString()}
+        - <span style={{ fontSize: '14px' }}>TOKEN</span>{' '}
+        {transaction.amount && transaction.amount.toLocaleString()}
       </Typography>
     </Box>
   );
@@ -119,10 +120,12 @@ function WalletCard({ wallet, active, handleClick }) {
       onClick={handleClick}
     >
       <Link href={`/wallets/${wallet.id}`}>
-        <MapIcon  sx={{ fontSize: 32 }} />
+        <MapIcon sx={{ fontSize: 32 }} />
       </Link>
       <Box>
-        <Typography variant="h5">Token {wallet.balance && wallet.balance.toLocaleString()}</Typography>
+        <Typography variant="h5">
+          Token {wallet.balance && wallet.balance.toLocaleString()}
+        </Typography>
         <Typography variant="body2">
           {moment(wallet.createdAt).format('MMM DD, YYYY')}
         </Typography>
@@ -158,7 +161,7 @@ export default function Home() {
   if (!user) {
     return (
       <div>
-        Need to login, <a href="/" >click here</a>
+        Need to login, <a href="/">click here</a>
       </div>
     );
   }
@@ -179,7 +182,6 @@ export default function Home() {
     };
     load();
   }, []);
-      
 
   return (
     <div>
@@ -288,11 +290,11 @@ export default function Home() {
           }}
         >
           {ws.map((wallet) => (
-            <WalletCard 
-              wallet={wallet} 
+            <WalletCard
+              wallet={wallet}
               active={wallet.id === currentWalletId}
               handleClick={() => handleWalletClick(wallet.id)}
-              />
+            />
           ))}
         </Box>
         <Box
@@ -310,7 +312,7 @@ export default function Home() {
           <Typography variant="h5">Last Transactions</Typography>
           <ArrowIcon />
         </Box>
-        {isTransactionLoading && 
+        {isTransactionLoading && (
           <Box
             sx={{
               width: '100%',
@@ -322,19 +324,20 @@ export default function Home() {
               justifyContent: 'center',
             }}
           >
-          <CircularProgress />
+            <CircularProgress />
           </Box>
-        }
-        {!isTransactionLoading && ts.map((transaction, index) => (
-          <Box>
-            <TransactionComponent transaction={transaction} />
-          </Box>
-        ))}
+        )}
+        {!isTransactionLoading &&
+          ts.map((transaction, index) => (
+            <Box>
+              <TransactionComponent transaction={transaction} />
+            </Box>
+          ))}
         <Paper
-          sx={{ 
-            position: 'fixed', 
-            bottom: 0, 
-            left: 0, 
+          sx={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
             right: 0,
             height: 90,
           }}

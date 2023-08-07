@@ -1,6 +1,12 @@
-import { RecoilState, atom, selector, useRecoilState, useRecoilValue } from "recoil";
-import { Wallet } from "../entities/Wallet";
-import { Token } from "../entities/Token";
+import {
+  RecoilState,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+import { Wallet } from '../entities/Wallet';
+import { Token } from '../entities/Token';
 
 const transferWizardState = atom<{
   step: number;
@@ -31,7 +37,7 @@ const transferWizardState = atom<{
 
 const isTransferableState = selector({
   key: 'transfer/isTransferable',
-  get: function({ get }: any) {
+  get: function ({ get }: any) {
     const { fromWallet, token } = get(transferWizardState);
     console.log('isTransferable', fromWallet, token);
     return fromWallet && token;
@@ -39,14 +45,16 @@ const isTransferableState = selector({
 });
 
 export default function useTransferWizard() {
-
   const [wizard, setWizard] = useRecoilState(transferWizardState);
 
   const isTransferable = useRecoilValue(isTransferableState);
 
   function gotoStep2(onSuccess: Function) {
-    if(!wizard.toWallet) {
-      setWizard({ ...wizard, step1: { ...wizard.step1, error: 'Please select a wallet' } });
+    if (!wizard.toWallet) {
+      setWizard({
+        ...wizard,
+        step1: { ...wizard.step1, error: 'Please select a wallet' },
+      });
       return;
     }
     onSuccess();
@@ -54,7 +62,7 @@ export default function useTransferWizard() {
 
   async function transfer(onSuccess: Function) {
     console.log('transfer');
-    
+
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     onSuccess();
@@ -66,6 +74,5 @@ export default function useTransferWizard() {
     isTransferable,
     gotoStep2,
     transfer,
-  }
-
+  };
 }

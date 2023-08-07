@@ -1,5 +1,5 @@
-import { faker } from "@faker-js/faker";
-import { Wallet } from "../entities/Wallet";
+import { faker } from '@faker-js/faker';
+import { Wallet } from '../entities/Wallet';
 
 async function getWallets(userId: string): Promise<Wallet[]> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -24,6 +24,8 @@ const wallets = Array.from({ length: 10 }, () => ({
 async function getWalletByKeyword(keyword: string): Promise<Wallet[]> {
   await new Promise((resolve) => setTimeout(resolve, 100));
 
-  return wallets.filter((option) => option.name.toLowerCase().includes(keyword.toLowerCase()));
+  return wallets.filter((option) =>
+    option.name.toLowerCase().includes(keyword.toLowerCase()),
+  );
 }
 export { getWallets, getWalletByKeyword };

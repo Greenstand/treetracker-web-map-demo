@@ -1,5 +1,5 @@
-import { faker } from "@faker-js/faker";
-import {Transaction} from "../entities/Transaction";
+import { faker } from '@faker-js/faker';
+import { Transaction } from '../entities/Transaction';
 
 async function getTransactions(walletId: string): Promise<Transaction[]> {
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -15,7 +15,6 @@ async function getTransactions(walletId: string): Promise<Transaction[]> {
     receiverId: faker.datatype.uuid(),
     receiverName: faker.person.firstName(),
     receiverAvatar: faker.image.avatar(),
-
   }));
 }
 

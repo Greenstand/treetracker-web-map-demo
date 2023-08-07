@@ -97,7 +97,7 @@ const Home: NextPage = () => {
                   variant="outlined"
                   placeholder="Enter your name"
                   value={loginForm.name}
-                  onChange={e => loginForm.handleNameChange(e.target.value)}
+                  onChange={(e) => loginForm.handleNameChange(e.target.value)}
                   error={!!loginForm.nameError}
                   helperText={loginForm.nameError}
                 />
@@ -121,7 +121,9 @@ const Home: NextPage = () => {
                   placeholder="*******"
                   type="password"
                   value={loginForm.password}
-                  onChange={e => loginForm.handlePasswordChange(e.target.value)}
+                  onChange={(e) =>
+                    loginForm.handlePasswordChange(e.target.value)
+                  }
                   error={!!loginForm.passwordError}
                   helperText={loginForm.passwordError}
                 />
@@ -137,13 +139,13 @@ const Home: NextPage = () => {
             }}
             variant="contained"
             disableElevation
-            onClick={e => loginForm.handleSubmit(
-              (user: User) => {
-                console.log("user:", user);
+            onClick={(e) =>
+              loginForm.handleSubmit((user: User) => {
+                console.log('user:', user);
                 setUser(user);
-                router.push('/home');  
-              },
-            )}
+                router.push('/home');
+              })
+            }
           >
             {loginForm.isSubmitting ? (
               <CircularProgress color="inherit" />

@@ -15,12 +15,12 @@ export default function Wallet() {
 
   //init transferWizard
   useEffect(() => {
-    async function load(){
+    async function load() {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      if(transferWizard.wizard.fromWallet && transferWizard.wizard.token){
+      if (transferWizard.wizard.fromWallet && transferWizard.wizard.token) {
         setCurrentWallet(transferWizard.wizard.fromWallet);
         setChosenToken(transferWizard.wizard.token);
-      }else{
+      } else {
         const wallet = {
           id: faker.datatype.uuid(),
           name: faker.internet.userName(),
@@ -33,13 +33,12 @@ export default function Wallet() {
           id: faker.datatype.uuid(),
           walletId: wallet.id,
           createdAt: faker.date.past(),
-        }
+        };
         setChosenToken(token);
-        }
       }
+    }
 
     load();
-
   }, []);
 
   useEffect(() => {
@@ -48,12 +47,10 @@ export default function Wallet() {
         ...current,
         fromWallet: currentWallet,
         token: chosenToken,
-        };
+      };
     });
-
   }, [currentWallet, chosenToken]);
 
-      
   return (
     <Box
       sx={{
@@ -63,11 +60,11 @@ export default function Wallet() {
         height: '100vh',
       }}
     >
-      <Header 
-        title={currentWallet && formatWalletName(currentWallet) || ''}
+      <Header
+        title={(currentWallet && formatWalletName(currentWallet)) || ''}
         backLink="/home"
-        forwardLink={transferWizard.isTransferable ? "/transfer/step1": ""}
-        forwardText={transferWizard.isTransferable ? 'Transfer': ''}
+        forwardLink={transferWizard.isTransferable ? '/transfer/step1' : ''}
+        forwardText={transferWizard.isTransferable ? 'Transfer' : ''}
       />
       <Box
         sx={{

@@ -1,14 +1,13 @@
-import { useState } from "react";
-import { login } from "../api/accounts";
-import { User } from "../user/User";
+import { useState } from 'react';
+import { login } from '../api/accounts';
+import { User } from '../user/User';
 
 export default function useLoginForm() {
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   function handleNameChange(newValue: string) {
     setName(newValue);
@@ -18,9 +17,7 @@ export default function useLoginForm() {
     setPassword(newValue);
   }
 
-  async function handleSubmit(
-    onSuccess: (user: User) => void,
-  ) {
+  async function handleSubmit(onSuccess: (user: User) => void) {
     if (!name) {
       setNameError('Please enter your name');
       return;
@@ -36,7 +33,6 @@ export default function useLoginForm() {
     onSuccess(user);
   }
 
-
   return {
     name,
     nameError,
@@ -46,5 +42,5 @@ export default function useLoginForm() {
     handleNameChange,
     handlePasswordChange,
     handleSubmit,
-  }
+  };
 }
