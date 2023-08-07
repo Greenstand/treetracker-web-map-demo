@@ -42,12 +42,12 @@ import useBalance from '../models/user/useBalance';
 import useWalletList from '../models/wallet/useWalletList';
 import useTab from '../models/common/useTab';
 
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
-import WalletRoundedIcon from '@mui/icons-material/WalletRounded';
-import PasswordRoundedIcon from '@mui/icons-material/PasswordRounded';
-import SettingsIcon from '@mui/icons-material/Settings';
+import CloseRoundedIcon from '../images/Close.svg';
+import LogoutRoundedIcon from '../images/Logout.svg';
+import HistoryRoundedIcon from '../images/History.svg';
+import WalletRoundedIcon from '../images/Wallet.svg';
+import PasswordRoundedIcon from '../images/Key.svg';
+import SettingsIcon from '../images/Settings.svg';
 
 function TransactionComponent({ transaction }) {
   return (
@@ -235,7 +235,7 @@ export default function Home() {
             Profile
           </Typography>
         </Grid>
-        <Grid xs={2}>
+        <Grid xs={2} sx={{ paddingBottom: 1 }}>
           <IconButton size="large">
             <LogoutRoundedIcon fontSize="large" sx={{ color: '#000' }} />
           </IconButton>
