@@ -7,6 +7,7 @@ import {
   CircularProgress,
   Paper,
   SvgIcon,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import Head from 'next/head';
@@ -119,9 +120,16 @@ function WalletCard({ wallet, active, handleClick }) {
       elevation={0}
       onClick={handleClick}
     >
-      <Link href={`/wallets/${wallet.id}`}>
-        <MapIcon sx={{ fontSize: 32 }} />
-      </Link>
+      <Tooltip
+        title={'Please click me'}
+        placement="bottom"
+        open={active}
+        arrow={true}
+      >
+        <Link href={`/wallets/${wallet.id}`}>
+          <MapIcon sx={{ fontSize: 32 }} />
+        </Link>
+      </Tooltip>
       <Box>
         <Typography variant="h5">
           Token {wallet.balance && wallet.balance.toLocaleString()}

@@ -1,6 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Button, CircularProgress, SvgIcon, TextField } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  SvgIcon,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import { Paper, Box, Typography, Avatar } from '@mui/material';
 import UserSvg from '../images/user.svg';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
@@ -85,7 +91,14 @@ const Home: NextPage = () => {
                   marginTop: 13,
                 }}
               >
-                <Typography variant="subtitle2">Name</Typography>
+                <Tooltip
+                  open={true}
+                  arrow
+                  title="User name: admin, pwd: admin"
+                  placement="top"
+                >
+                  <Typography variant="subtitle2">Name</Typography>
+                </Tooltip>
                 <TextField
                   sx={{
                     width: '100%',

@@ -18,6 +18,8 @@ export default function useLoginForm() {
   }
 
   async function handleSubmit(onSuccess: (user: User) => void) {
+    setNameError('');
+    setPasswordError('');
     if (!name) {
       setNameError('Please enter your name');
       return;
@@ -26,6 +28,11 @@ export default function useLoginForm() {
       setPasswordError('Please enter your password');
       return;
     }
+    if (name !== 'admin' || password !== 'admin') {
+      setPasswordError('Invalid name or password');
+      return;
+    }
+
     console.log('login');
     // sleep
     setIsSubmitting(true);

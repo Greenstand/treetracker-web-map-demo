@@ -32,8 +32,8 @@ export default function Step2() {
           paddingRight: 5,
         }}
       >
-        {transferWizard.wizard.step1.error && (
-          <Alert onClose={() => {}}>{transferWizard.wizard.step1.error}</Alert>
+        {transferWizard.wizard.step3.error && (
+          <Alert onClose={() => {}}>{transferWizard.wizard.step3.error}</Alert>
         )}
         <Box
           sx={{

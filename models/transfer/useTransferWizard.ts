@@ -19,6 +19,9 @@ const transferWizardState = atom<{
   step2: {
     error: string | null;
   };
+  step3: {
+    error: string | null;
+  };
 }>({
   key: 'transfer/transferWizard',
   default: {
@@ -30,6 +33,9 @@ const transferWizardState = atom<{
       error: null,
     },
     step2: {
+      error: null,
+    },
+    step3: {
       error: null,
     },
   },

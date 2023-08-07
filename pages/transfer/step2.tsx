@@ -26,14 +26,14 @@ export default function Step2() {
   return (
     <Box>
       <Header
-        title="Please confirm"
+        title="Confirm"
         backLink="/transfer/step1"
         forwardLink={() => {
           transferWizard.transfer(() => {
             router.push('/transfer/step3');
           });
         }}
-        forwardText="Transfer"
+        forwardText="Yes"
       />
       <Box
         sx={{
@@ -152,9 +152,9 @@ export default function Step2() {
           </Box>
           <Box>
             <Typography variant="body2" sx={{ marginTop: 12 }}>
-              You are going to transfer 1 token from wallet:{' '}
+              Are you sure to transfer 1 token from wallet:{' '}
               {transferWizard.wizard.fromWallet?.name} to wallet:{' '}
-              {transferWizard.wizard.toWallet?.name}.
+              {transferWizard.wizard.toWallet?.name}?
             </Typography>
           </Box>
         </Box>
