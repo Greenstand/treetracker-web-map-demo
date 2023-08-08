@@ -1,16 +1,7 @@
 # Web Map Demo
 
-## Getting Started
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-## Rules
+## Rules of this project
 
 - The files in the `models` folder can import any other files in the `models` folder.
 
@@ -21,3 +12,14 @@ yarn dev
 - Other folders can import anything in the `models` folder.
 
 - Don't recommend to import recoil state directly in the `models` folder, if we need state managed by recoil but don't want to put it into the `model`, we can put it in the `states` folder.
+
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
