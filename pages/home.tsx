@@ -25,12 +25,16 @@ import currentUser from '../states/currentUser';
 import { useEffect, useState } from 'react';
 import * as accounts from '../models/api/accounts';
 import * as wallets from '../models/api/wallets';
-import * as transactions from '../models/api/transactions';
 import { Wallet } from '../models/entities/Wallet';
 import { Transaction } from '../models/entities/Transaction';
 import moment from 'moment';
 import MapIcon from '@mui/icons-material/Map';
 import Link from 'next/link';
+import useTransactionList from '../models/transaction/useTransactionList';
+import { tr } from '@faker-js/faker';
+import useBalance from '../models/user/useBalance';
+import useWalletList from '../models/wallet/useWalletList';
+import useTab from '../models/common/useTab';
 
 function TransactionComponent({ transaction }) {
   return (
@@ -149,22 +153,10 @@ function WalletCard({ wallet, active, handleClick }) {
 export default function Home() {
   const [user, setUser] = useRecoilState(currentUser);
   console.log('home user:', user);
-  const [balance, setBalance] = useState(0);
-  const [ws, setWs] = useState<Wallet[]>([]);
-  const [currentWalletId, setCurrentWalletId] = useState('');
-  const [ts, setTs] = useState<Transaction[]>([]);
-  const [isTransactionLoading, setIsTransactionLoading] = useState(true);
-
-  async function handleWalletClick(id: string) {
-    setCurrentWalletId(id);
-    const wallet = ws.find((w) => w.id === id);
-    if (wallet) {
-      setIsTransactionLoading(true);
-      const ts = await transactions.getTransactions(wallet.id);
-      setIsTransactionLoading(false);
-      setTs(ts);
-    }
-  }
+  const balance = useBalance(user?.userId);
+  const walletList = useWalletList(user?.userId);
+  const tab = useTab<Wallet>(walletList.list);
+  const transactionList = useTransactionList(tab.activeTabItem?.id);
 
   if (!user) {
     return (
@@ -173,23 +165,6 @@ export default function Home() {
       </div>
     );
   }
-
-  useEffect(() => {
-    const load = async () => {
-      const balance = await accounts.getBalance(user.userId);
-      setBalance(balance);
-
-      const ws = await wallets.getWallets(user.userId);
-      setWs(ws);
-      if (ws.length > 0) {
-        setCurrentWalletId(ws[0].id);
-        const ts = await transactions.getTransactions(ws[0].id);
-        setIsTransactionLoading(false);
-        setTs(ts);
-      }
-    };
-    load();
-  }, []);
 
   return (
     <div>
@@ -297,11 +272,11 @@ export default function Home() {
             overflowX: 'scroll',
           }}
         >
-          {ws.map((wallet) => (
+          {!walletList.isWalletLoading && walletList.list.map((wallet, index) => (
             <WalletCard
               wallet={wallet}
-              active={wallet.id === currentWalletId}
-              handleClick={() => handleWalletClick(wallet.id)}
+              active={wallet.id === tab.activeTabItem.id}
+              handleClick={() => tab.setActiveTabIndex(index)}
             />
           ))}
         </Box>
@@ -320,7 +295,7 @@ export default function Home() {
           <Typography variant="h5">Last Transactions</Typography>
           <ArrowIcon />
         </Box>
-        {isTransactionLoading && (
+        {transactionList.isTransactionLoading && (
           <Box
             sx={{
               width: '100%',
@@ -335,8 +310,8 @@ export default function Home() {
             <CircularProgress />
           </Box>
         )}
-        {!isTransactionLoading &&
-          ts.map((transaction, index) => (
+        {!transactionList.isTransactionLoading &&
+          transactionList.list?.map((transaction, index) => (
             <Box>
               <TransactionComponent transaction={transaction} />
             </Box>
