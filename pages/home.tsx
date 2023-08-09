@@ -5,10 +5,16 @@ import {
   Box,
   Card,
   CircularProgress,
+  Drawer,
   Paper,
   SvgIcon,
   Tooltip,
   Typography,
+  IconButton,
+  Stack,
+  Grid,
+  List,
+  ListItem,
 } from '@mui/material';
 import Head from 'next/head';
 import NotificationIcon from '../images/Notification.svg';
@@ -35,6 +41,14 @@ import { tr } from '@faker-js/faker';
 import useBalance from '../models/user/useBalance';
 import useWalletList from '../models/wallet/useWalletList';
 import useTab from '../models/common/useTab';
+
+import CloseRoundedIcon from '../images/Close.svg';
+import LogoutRoundedIcon from '../images/Logout.svg';
+import HistoryRoundedIcon from '../images/History.svg';
+import WalletRoundedIcon from '../images/Wallet.svg';
+import PasswordRoundedIcon from '../images/Key.svg';
+import SettingsIcon from '../images/Settings.svg';
+import Navbar from '../components/Navbar';
 
 function TransactionComponent({ transaction }) {
   return (
@@ -166,6 +180,12 @@ export default function Home() {
     );
   }
 
+  const [open, setOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
   return (
     <div>
       <Head>
@@ -173,6 +193,7 @@ export default function Home() {
         <meta name="description" content="Home page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Navbar user={user} open={open} toggleDrawer={toggleDrawer} />
       <main>
         <Box
           sx={{
@@ -202,6 +223,7 @@ export default function Home() {
                 height: 49,
                 marginRight: 3,
               }}
+              onClick={toggleDrawer}
             />
             <Box
               sx={{
@@ -272,13 +294,14 @@ export default function Home() {
             overflowX: 'scroll',
           }}
         >
-          {!walletList.isWalletLoading && walletList.list.map((wallet, index) => (
-            <WalletCard
-              wallet={wallet}
-              active={wallet.id === tab.activeTabItem.id}
-              handleClick={() => tab.setActiveTabIndex(index)}
-            />
-          ))}
+          {!walletList.isWalletLoading &&
+            walletList.list.map((wallet, index) => (
+              <WalletCard
+                wallet={wallet}
+                active={wallet.id === tab.activeTabItem.id}
+                handleClick={() => tab.setActiveTabIndex(index)}
+              />
+            ))}
         </Box>
         <Box
           sx={{

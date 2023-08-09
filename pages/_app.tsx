@@ -16,6 +16,16 @@ const theme = createTheme({
       main: '#3f51b5',
     },
   },
+  components: {
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'transparent',
+          backdropFilter: 'blur(5px)',
+        },
+      },
+    },
+  },
   typography: {
     fontFamily: ['Product Sans'].join(','),
     h1: {
