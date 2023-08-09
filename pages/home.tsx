@@ -5,10 +5,14 @@ import {
   Box,
   Card,
   CircularProgress,
+  Drawer,
   Paper,
   SvgIcon,
   Tooltip,
   Typography,
+  IconButton,
+  Stack,
+  Grid,
 } from '@mui/material';
 import Head from 'next/head';
 import NotificationIcon from '../images/Notification.svg';
@@ -35,6 +39,13 @@ import { tr } from '@faker-js/faker';
 import useBalance from '../models/user/useBalance';
 import useWalletList from '../models/wallet/useWalletList';
 import useTab from '../models/common/useTab';
+
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
+import WalletRoundedIcon from '@mui/icons-material/WalletRounded';
+import PasswordRoundedIcon from '@mui/icons-material/PasswordRounded';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function TransactionComponent({ transaction }) {
   return (
@@ -166,8 +177,179 @@ export default function Home() {
     );
   }
 
+  const [open, setOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
   return (
     <div>
+      <Grid
+        sx={{
+          width: '100vw',
+          backgroundColor: '#fff',
+          height: '10vh',
+          elevation: 30,
+          zIndex: 1201,
+          position: 'fixed',
+          top: open ? '0' : '-10vh',
+          transition: 'all 0.25s',
+        }}
+        container
+        rowSpacing={3}
+        style={{
+          display: 'flex',
+          alignItems: 'flex-end',
+        }}
+      >
+        <Grid xs={2}>
+          <IconButton size="large" onClick={toggleDrawer}>
+            <CloseRoundedIcon fontSize="large" sx={{ color: '#000' }} />
+          </IconButton>
+        </Grid>
+        <Grid xs={8} sx={{ textAlign: 'center' }}>
+          <Typography
+            sx={{ width: '100%', height: '5vh', textAlign: 'center' }}
+            variant="h4"
+          >
+            Profile
+          </Typography>
+        </Grid>
+        <Grid xs={2}>
+          <IconButton size="large">
+            <LogoutRoundedIcon fontSize="large" sx={{ color: '#000' }} />
+          </IconButton>
+        </Grid>
+      </Grid>
+      <Drawer open={open} onClose={toggleDrawer}>
+        <Box sx={{ width: '70vw', marginTop: '10vh', paddingLeft: 5 }}>
+          <Avatar
+            src={user.avatar}
+            sx={{
+              width: 69,
+              height: 69,
+            }}
+          />
+          <Typography variant="h4" sx={{ marginTop: 3 }}>
+            {user.firstName + ' ' + user.lastName}
+          </Typography>
+          <Typography variant="subtitle2">
+            {user.firstName.toLowerCase() + '.' + user.lastName.toLowerCase()}
+            @gmail.com
+          </Typography>
+          <Stack sx={{ marginTop: 5 }}>
+            <Stack
+              direction="row"
+              sx={{ marginTop: 1 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                sx={{
+                  width: 43,
+                  height: 43,
+                  backgroundColor: '#F1F5FF',
+                  borderRadius: '50%',
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <HistoryRoundedIcon />
+              </Box>
+              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+                Transaction History
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              sx={{ marginTop: 3 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                sx={{
+                  width: 43,
+                  height: 43,
+                  backgroundColor: '#F1F5FF',
+                  borderRadius: '50%',
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <WalletRoundedIcon />
+              </Box>
+              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+                All Wallets
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              sx={{ marginTop: 3 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                sx={{
+                  width: 43,
+                  height: 43,
+                  backgroundColor: '#F1F5FF',
+                  borderRadius: '50%',
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <PasswordRoundedIcon />
+              </Box>
+              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+                Change Password
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              sx={{ marginTop: 3 }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                sx={{
+                  width: 43,
+                  height: 43,
+                  backgroundColor: '#F1F5FF',
+                  borderRadius: '50%',
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <SettingsIcon />
+              </Box>
+              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+                Settings
+              </Typography>
+            </Stack>
+          </Stack>
+        </Box>
+      </Drawer>
       <Head>
         <title>Home</title>
         <meta name="description" content="Home page" />
@@ -202,6 +384,7 @@ export default function Home() {
                 height: 49,
                 marginRight: 3,
               }}
+              onClick={toggleDrawer}
             />
             <Box
               sx={{
@@ -272,13 +455,14 @@ export default function Home() {
             overflowX: 'scroll',
           }}
         >
-          {!walletList.isWalletLoading && walletList.list.map((wallet, index) => (
-            <WalletCard
-              wallet={wallet}
-              active={wallet.id === tab.activeTabItem.id}
-              handleClick={() => tab.setActiveTabIndex(index)}
-            />
-          ))}
+          {!walletList.isWalletLoading &&
+            walletList.list.map((wallet, index) => (
+              <WalletCard
+                wallet={wallet}
+                active={wallet.id === tab.activeTabItem.id}
+                handleClick={() => tab.setActiveTabIndex(index)}
+              />
+            ))}
         </Box>
         <Box
           sx={{
