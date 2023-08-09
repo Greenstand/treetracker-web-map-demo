@@ -235,31 +235,14 @@ export default function Home() {
             Profile
           </Typography>
         </Grid>
-        <Grid
-          item
-          xs={2}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <IconButton>
-            <LogoutRoundedIcon />
+        <Grid xs={2}>
+          <IconButton size="large">
+            <LogoutRoundedIcon fontSize="large" sx={{ color: '#000' }} />
           </IconButton>
         </Grid>
       </Grid>
-      <SwipeableDrawer
-        open={open}
-        onClose={toggleDrawer}
-        onOpen={toggleDrawer}
-        style={{ boxShadow: 'none' }}
-        elevation={0}
-        sx={{
-          zIndex: 1,
-        }}
-      >
-        <Box sx={{ width: '70vw', marginTop: '13vh', paddingLeft: 7 }}>
+      <Drawer variant="temporary" open={open} onClose={toggleDrawer}>
+        <Box sx={{ width: '70vw', marginTop: '10vh', paddingLeft: 7 }}>
           <Avatar
             src={user.avatar}
             sx={{
@@ -394,7 +377,7 @@ export default function Home() {
             </ListItem>
           </List>
         </Box>
-      </SwipeableDrawer>
+      </Drawer>
       <Head>
         <title>Home</title>
         <meta name="description" content="Home page" />
