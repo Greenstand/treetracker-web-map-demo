@@ -13,6 +13,8 @@ import {
   IconButton,
   Stack,
   Grid,
+  List,
+  ListItem,
 } from '@mui/material';
 import Head from 'next/head';
 import NotificationIcon from '../images/Notification.svg';
@@ -203,27 +205,61 @@ export default function Home() {
           alignItems: 'flex-end',
         }}
       >
-        <Grid xs={2}>
-          <IconButton size="large" onClick={toggleDrawer}>
-            <CloseRoundedIcon fontSize="large" sx={{ color: '#000' }} />
+        <Grid
+          item
+          xs={2}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <IconButton onClick={toggleDrawer}>
+            <CloseRoundedIcon />
           </IconButton>
         </Grid>
-        <Grid xs={8} sx={{ textAlign: 'center' }}>
+        <Grid
+          item
+          xs={8}
+          sx={{ textAlign: 'center' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <Typography
-            sx={{ width: '100%', height: '5vh', textAlign: 'center' }}
+            sx={{ width: '100%', height: '4vh', textAlign: 'center' }}
             variant="h4"
           >
             Profile
           </Typography>
         </Grid>
-        <Grid xs={2}>
-          <IconButton size="large">
-            <LogoutRoundedIcon fontSize="large" sx={{ color: '#000' }} />
+        <Grid
+          item
+          xs={2}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <IconButton>
+            <LogoutRoundedIcon />
           </IconButton>
         </Grid>
       </Grid>
-      <Drawer variant="temporary" open={open} onClose={toggleDrawer}>
-        <Box sx={{ width: '70vw', marginTop: '10vh', paddingLeft: 7 }}>
+      <SwipeableDrawer
+        open={open}
+        onClose={toggleDrawer}
+        onOpen={toggleDrawer}
+        style={{ boxShadow: 'none' }}
+        elevation={0}
+        sx={{
+          zIndex: 1,
+        }}
+      >
+        <Box sx={{ width: '70vw', marginTop: '13vh', paddingLeft: 7 }}>
           <Avatar
             src={user.avatar}
             sx={{
@@ -238,121 +274,127 @@ export default function Home() {
             {user.firstName.toLowerCase() + '.' + user.lastName.toLowerCase()}
             @gmail.com
           </Typography>
-          <Stack sx={{ marginTop: 5 }}>
-            <Stack
-              direction="row"
-              sx={{ marginTop: 1 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                sx={{
-                  width: 43,
-                  height: 43,
-                  backgroundColor: '#F1F5FF',
-                  borderRadius: '50%',
-                }}
+          <Typography variant="subtitle2">samwell.h@gmail.com</Typography>
+          <List sx={{ marginTop: 8, marginLeft: 0, paddingLeft: 0 }}>
+            <ListItem sx={{ marginLeft: 0, paddingLeft: 0 }}>
+              <Stack
+                direction="row"
+                sx={{ marginTop: 1 }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
-                <HistoryRoundedIcon />
-              </Box>
-              <Typography
-                variant="h6"
-                sx={{ paddingLeft: 6, fontSize: '1rem' }}
-              >
-                Transaction History
-              </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              sx={{ marginTop: 3 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                sx={{
-                  width: 43,
-                  height: 43,
-                  backgroundColor: '#F1F5FF',
-                  borderRadius: '50%',
-                }}
+                <Box
+                  sx={{
+                    width: 43,
+                    height: 43,
+                    backgroundColor: '#F1F5FF',
+                    borderRadius: '50%',
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <HistoryRoundedIcon />
+                </Box>
+                <Typography
+                  variant="h6"
+                  sx={{ paddingLeft: 6, fontSize: '1rem' }}
+                >
+                  Transaction History
+                </Typography>
+              </Stack>
+            </ListItem>
+            <ListItem sx={{ marginLeft: 0, paddingLeft: 0 }}>
+              <Stack
+                direction="row"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
-                <WalletRoundedIcon />
-              </Box>
-              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
-                All Wallets
-              </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              sx={{ marginTop: 3 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                sx={{
-                  width: 43,
-                  height: 43,
-                  backgroundColor: '#F1F5FF',
-                  borderRadius: '50%',
-                }}
+                <Box
+                  sx={{
+                    width: 43,
+                    height: 43,
+                    backgroundColor: '#F1F5FF',
+                    borderRadius: '50%',
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <WalletRoundedIcon />
+                </Box>
+                <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+                  All Wallets
+                </Typography>
+              </Stack>
+            </ListItem>
+            <ListItem sx={{ marginLeft: 0, paddingLeft: 0 }}>
+              <Stack
+                direction="row"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
-                <PasswordRoundedIcon />
-              </Box>
-              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
-                Change Password
-              </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              sx={{ marginTop: 3 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                sx={{
-                  width: 43,
-                  height: 43,
-                  backgroundColor: '#F1F5FF',
-                  borderRadius: '50%',
-                }}
+                <Box
+                  sx={{
+                    width: 43,
+                    height: 43,
+                    backgroundColor: '#F1F5FF',
+                    borderRadius: '50%',
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <PasswordRoundedIcon />
+                </Box>
+                <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+                  Change Password
+                </Typography>
+              </Stack>
+            </ListItem>
+            <ListItem sx={{ marginLeft: 0, paddingLeft: 0 }}>
+              <Stack
+                direction="row"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
-                <SettingsIcon />
-              </Box>
-              <Typography variant="h6" sx={{ paddingLeft: 6 }}>
-                Settings
-              </Typography>
-            </Stack>
-          </Stack>
+                <Box
+                  sx={{
+                    width: 43,
+                    height: 43,
+                    backgroundColor: '#F1F5FF',
+                    borderRadius: '50%',
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <SettingsIcon />
+                </Box>
+                <Typography variant="h6" sx={{ paddingLeft: 6 }}>
+                  Settings
+                </Typography>
+              </Stack>
+            </ListItem>
+          </List>
         </Box>
-      </Drawer>
+      </SwipeableDrawer>
       <Head>
         <title>Home</title>
         <meta name="description" content="Home page" />
