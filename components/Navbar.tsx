@@ -9,6 +9,7 @@ import {
   Grid,
   List,
   ListItem,
+  useMediaQuery,
 } from '@mui/material';
 
 import CloseRoundedIcon from '../images/Close.svg';
@@ -19,19 +20,41 @@ import PasswordRoundedIcon from '../images/Key.svg';
 import SettingsIcon from '../images/Settings.svg';
 
 const Navbar = ({ user, open, toggleDrawer }) => {
+  const isLarge = useMediaQuery('(min-width:800px)');
+  const isMedium = useMediaQuery('(min-width:550px)');
+
+  const topbarStyling = () => {
+    if (isLarge) {
+      return {
+        width: '40vw',
+        backgroundColor: '#fff',
+        height: '10vh',
+        elevation: 30,
+        zIndex: 1201,
+        position: 'fixed',
+        top: 0,
+        left: open ? '0' : '-40vw',
+        transition: 'all 0.25s',
+        maxWidth: '504px',
+      };
+    } else {
+      return {
+        width: '100vw',
+        backgroundColor: '#fff',
+        height: '10vh',
+        elevation: 30,
+        zIndex: 1201,
+        position: 'fixed',
+        top: open ? '0' : '-10vh',
+        transition: 'all 0.25s',
+      };
+    }
+  };
+
   return (
     <>
       <Grid
-        sx={{
-          width: '100vw',
-          backgroundColor: '#fff',
-          height: '10vh',
-          elevation: 30,
-          zIndex: 1201,
-          position: 'fixed',
-          top: open ? '0' : '-10vh',
-          transition: 'all 0.25s',
-        }}
+        sx={topbarStyling()}
         container
         rowSpacing={3}
         style={{
@@ -69,14 +92,29 @@ const Navbar = ({ user, open, toggleDrawer }) => {
             Profile
           </Typography>
         </Grid>
-        <Grid xs={2} sx={{ paddingBottom: 1 }}>
+        <Grid
+          xs={2}
+          sx={{ paddingBottom: 1 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <IconButton size="large">
             <LogoutRoundedIcon fontSize="large" sx={{ color: '#000' }} />
           </IconButton>
         </Grid>
       </Grid>
       <Drawer variant="temporary" open={open} onClose={toggleDrawer}>
-        <Box sx={{ width: '70vw', marginTop: '10vh', paddingLeft: 7 }}>
+        <Box
+          sx={{
+            width: isLarge ? '40vw' : '70vw',
+            marginTop: '10vh',
+            maxWidth: '504px',
+            paddingLeft: 7,
+          }}
+        >
           <Avatar
             src={user.avatar}
             sx={{
