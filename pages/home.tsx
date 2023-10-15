@@ -180,6 +180,32 @@ export default function Home() {
     );
   }
 
+  const [xl, set_xl] = useState(window.innerWidth > 1200 ? true : false);
+  const [lg, set_lg] = useState(window.innerWidth > 787 ? true : false);
+  const [sm, set_sm] = useState(window.innerWidth < 360 ? true : false);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1200) {
+        set_xl(true);
+      } else {
+        set_xl(false);
+      }
+
+      if (window.innerWidth >= 787) {
+        set_lg(true);
+      } else {
+        set_lg(false);
+      }
+
+      if (window.innerWidth < 360) {
+        set_sm(true);
+      } else {
+        set_sm(false);
+      }
+    });
+  }, []);
+
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -199,8 +225,8 @@ export default function Home() {
         onClick={open ? () => setOpen(false) : null}
         style={{
           position: 'fixed',
-          top: open ? '10vh' : '0',
-          left: open ? (window.innerWidth > 360 ? '70vw' : '275px') : '0',
+          top: open ? (!lg && !xl ? '10vh' : '0') : '0',
+          left: open ? (xl ? '30vw' : lg ? '45vw' : '70vw') : '0',
           bottom: '0',
           overflowY: 'scroll',
           width: '100vw',
@@ -211,6 +237,7 @@ export default function Home() {
           style={{
             filter: open ? 'blur(5px)' : '',
             pointerEvents: open ? 'none' : 'auto',
+            transition: 'all 0.5s',
           }}
         >
           <Box
