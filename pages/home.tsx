@@ -180,10 +180,37 @@ export default function Home() {
     );
   }
 
+  const [xl, set_xl] = useState(window.innerWidth > 1200 ? true : false);
+  const [lg, set_lg] = useState(window.innerWidth > 787 ? true : false);
+  const [sm, set_sm] = useState(window.innerWidth < 360 ? true : false);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1200) {
+        set_xl(true);
+      } else {
+        set_xl(false);
+      }
+
+      if (window.innerWidth >= 787) {
+        set_lg(true);
+      } else {
+        set_lg(false);
+      }
+
+      if (window.innerWidth < 360) {
+        set_sm(true);
+      } else {
+        set_sm(false);
+      }
+    });
+  }, []);
+
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = () => {
     setOpen(!open);
+    console.log(window.innerWidth);
   };
 
   return (
@@ -194,177 +221,196 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar user={user} open={open} toggleDrawer={toggleDrawer} />
-      <main>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            width: '100%',
-            marginTop: 8,
-            paddingLeft: 7,
-            paddingRight: 7,
+      <main
+        onClick={open ? () => setOpen(false) : null}
+        style={{
+          position: 'fixed',
+          top: open ? (!lg && !xl ? '10vh' : '0') : '0',
+          left: open ? (xl ? '30vw' : lg ? '45vw' : '70vw') : '0',
+          bottom: '0',
+          overflowY: 'scroll',
+          width: '100vw',
+          transition: 'all 0.5s',
+        }}
+      >
+        <div
+          style={{
+            filter: open ? 'blur(5px)' : '',
+            pointerEvents: open ? 'none' : 'auto',
+            transition: 'all 0.5s',
           }}
         >
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'flex-start',
+              justifyContent: 'space-between',
               flexDirection: 'row',
               width: '100%',
+              marginTop: 8,
+              paddingLeft: 7,
+              paddingRight: 7,
             }}
           >
-            <Avatar
-              src={user.avatar}
-              sx={{
-                width: 49,
-                height: 49,
-                marginRight: 3,
-              }}
-              onClick={toggleDrawer}
-            />
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                flexDirection: 'row',
+                width: '100%',
               }}
             >
-              <Typography
-                variant="h1"
+              <Avatar
+                src={user.avatar}
                 sx={{
-                  fontSize: '14px',
+                  width: 49,
+                  height: 49,
+                  marginRight: 3,
                 }}
-              >
-                Total Balance
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: '22px',
-                  fontWeight: '600',
-                  marginTop: 0.8,
-                }}
-                variant="h2"
-              >
-                Token {balance && balance.toLocaleString()}
-              </Typography>
-            </Box>
-          </Box>
-          <SvgIcon
-            component={SearchIcon}
-            sx={{
-              width: 28,
-              height: 28,
-            }}
-            viewBox="0 0 28 28"
-          />
-          <SvgIcon
-            component={NotificationIcon}
-            sx={{
-              width: 28,
-              height: 30,
-              marginLeft: 7,
-            }}
-            viewBox="0 0 28 30"
-          />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            width: '100%',
-            marginTop: 9.5,
-            paddingLeft: 7,
-            paddingRight: 7,
-          }}
-        >
-          <Typography variant="h5">Wallets</Typography>
-          <ArrowIcon />
-        </Box>
-        <Box
-          sx={{
-            marginTop: 9,
-            display: 'flex',
-            flexDirection: 'row',
-            wrap: 'nowrap',
-            overflow: 'auto',
-            overflowX: 'scroll',
-          }}
-        >
-          {!walletList.isWalletLoading &&
-            walletList.list.map((wallet, index) => (
-              <WalletCard
-                wallet={wallet}
-                active={wallet.id === tab.activeTabItem.id}
-                handleClick={() => tab.setActiveTabIndex(index)}
+                onClick={toggleDrawer}
               />
-            ))}
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            width: '100%',
-            marginTop: 9.5,
-            paddingLeft: 7,
-            paddingRight: 7,
-          }}
-        >
-          <Typography variant="h5">Last Transactions</Typography>
-          <ArrowIcon />
-        </Box>
-        {transactionList.isTransactionLoading && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Typography
+                  variant="h1"
+                  sx={{
+                    fontSize: '14px',
+                  }}
+                >
+                  Total Balance
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: '22px',
+                    fontWeight: '600',
+                    marginTop: 0.8,
+                  }}
+                  variant="h2"
+                >
+                  Token {balance && balance.toLocaleString()}
+                </Typography>
+              </Box>
+            </Box>
+            <SvgIcon
+              component={SearchIcon}
+              sx={{
+                width: 28,
+                height: 28,
+              }}
+              viewBox="0 0 28 28"
+            />
+            <SvgIcon
+              component={NotificationIcon}
+              sx={{
+                width: 28,
+                height: 30,
+                marginLeft: 7,
+              }}
+              viewBox="0 0 28 30"
+            />
+          </Box>
           <Box
             sx={{
-              width: '100%',
-              marginTop: 9,
-              paddingLeft: 7,
-              paddingRight: 7,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              width: '100%',
+              marginTop: 9.5,
+              paddingLeft: 7,
+              paddingRight: 7,
             }}
           >
-            <CircularProgress />
+            <Typography variant="h5">Wallets</Typography>
+            <ArrowIcon />
           </Box>
-        )}
-        {!transactionList.isTransactionLoading &&
-          transactionList.list?.map((transaction, index) => (
-            <Box>
-              <TransactionComponent transaction={transaction} />
-            </Box>
-          ))}
-        <Paper
-          sx={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 90,
-          }}
-          elevation={0}
-        >
-          <BottomNavigation
-            value={'Recents'}
+          <Box
             sx={{
-              height: 90,
-              '& svg': {
-                width: 31,
-                height: 31,
-              },
+              marginTop: 9,
+              display: 'flex',
+              flexDirection: 'row',
+              wrap: 'nowrap',
+              overflow: 'auto',
+              overflowX: 'scroll',
             }}
           >
-            <BottomNavigationAction label="Recents" icon={<HomeIcon />} />
-            <BottomNavigationAction label="v3" icon={<V3Icon />} />
-            <BottomNavigationAction label="v4" icon={<V4Icon />} />
-            <BottomNavigationAction label="offer" icon={<OfferIcon />} />
-          </BottomNavigation>
-        </Paper>
+            {!walletList.isWalletLoading &&
+              walletList.list.map((wallet, index) => (
+                <WalletCard
+                  wallet={wallet}
+                  active={wallet.id === tab.activeTabItem.id}
+                  handleClick={() => tab.setActiveTabIndex(index)}
+                />
+              ))}
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              width: '100%',
+              marginTop: 9.5,
+              paddingLeft: 7,
+              paddingRight: 7,
+            }}
+          >
+            <Typography variant="h5">Last Transactions</Typography>
+            <ArrowIcon />
+          </Box>
+          {transactionList.isTransactionLoading && (
+            <Box
+              sx={{
+                width: '100%',
+                marginTop: 9,
+                paddingLeft: 7,
+                paddingRight: 7,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          )}
+          {!transactionList.isTransactionLoading &&
+            transactionList.list?.map((transaction, index) => (
+              <Box>
+                <TransactionComponent transaction={transaction} />
+              </Box>
+            ))}
+          <Paper
+            sx={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 90,
+            }}
+            elevation={0}
+          >
+            <BottomNavigation
+              value={'Recents'}
+              sx={{
+                height: 90,
+                '& svg': {
+                  width: 31,
+                  height: 31,
+                },
+              }}
+            >
+              <BottomNavigationAction label="Recents" icon={<HomeIcon />} />
+              <BottomNavigationAction label="v3" icon={<V3Icon />} />
+              <BottomNavigationAction label="v4" icon={<V4Icon />} />
+              <BottomNavigationAction label="offer" icon={<OfferIcon />} />
+            </BottomNavigation>
+          </Paper>
+        </div>
       </main>
     </div>
   );
